@@ -16,8 +16,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+
 @Component
-public classImplement JWT authentication {
+public class JWTTokenProvider {
     private final static String INVALID_TOKEN = "JWT token is expired or invalid";
     private final static String AUTH = "Authorization";
     private final static String PREFIX = "Bearer_";
