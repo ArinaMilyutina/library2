@@ -1,4 +1,4 @@
-package com.example.library2.entity;
+package com.example.library2.entity.book;
 
 public enum Genre {
     FANTASY,
