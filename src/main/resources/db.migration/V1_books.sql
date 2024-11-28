@@ -20,3 +20,11 @@ CREATE TABLE book_genres
     PRIMARY KEY (book_id, genre),
     FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
 );
+DROP TABLE book_genres;
+CREATE TABLE book_genres (
+                             book_id BIGINT,
+                             genre_id BIGINT,
+                             PRIMARY KEY (book_id, genre_id),
+                             FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+                             FOREIGN KEY (genre_id) REFERENCES genres(id) ON DELETE CASCADE
+);
