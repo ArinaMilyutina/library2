@@ -7,8 +7,7 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +15,11 @@ import java.util.Set;
 public class Book extends AbstractEntity {
     private String title;
     private String author;
-    private String ISBN ;
+    private String ISBN;
     private String description;
-    @ElementCollection
-    @CollectionTable(name = "book_genres", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "genre")
-    private Set<String> genre;
+    @ElementCollection(targetClass = Genre.class)
+    @CollectionTable(name = "entity_genre", joinColumns = @JoinColumn(name = "entity_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Genre> genre;
 
 }
