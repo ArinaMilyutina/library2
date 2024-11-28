@@ -1,9 +1,9 @@
-package com.example.library2.entity;
+package com.example.library2.entity.book;
 
-import jakarta.persistence.*;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -12,7 +12,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "books")
-public class Book extends AbstractEntity {
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String title;
     private String author;
     private String ISBN;
