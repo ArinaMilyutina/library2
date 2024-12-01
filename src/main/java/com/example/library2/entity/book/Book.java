@@ -1,9 +1,11 @@
 package com.example.library2.entity.book;
 
-
+import com.example.library2.entity.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @Entity
@@ -20,9 +22,15 @@ public class Book {
     private String author;
     private String ISBN;
     private String description;
-    @ElementCollection(targetClass = Genre.class)
-    @CollectionTable(name = "entity_genre", joinColumns = @JoinColumn(name = "entity_id"))
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "book_genres",
+            joinColumns = @JoinColumn(name = "book_id")
+    )
     @Enumerated(EnumType.STRING)
     private Set<Genre> genre;
-
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private User admin;
 }
