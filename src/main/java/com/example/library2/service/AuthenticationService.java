@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class AuthenticationService {
+    private static final String INCORRECT_DATA="Incorrect data entered!!!";
     @Autowired
     private UserService userService;
     @Autowired
@@ -23,14 +24,14 @@ public class AuthenticationService {
 
         Optional<User> byUsername = userService.findByUsername(authUserDto.getUsername());
         if (byUsername.isEmpty()) {
-            return "Incorrect data entered!!!";
+            return INCORRECT_DATA;
         }
         User user = byUsername.get();
         if (passwordEncoder.matches(authUserDto.getPassword(), user.getPassword())) {
             return jwtTokenProvider.generateToken(authUserDto.getUsername(), user.getRoles());
         }
 
-        return "Incorrect data entered!!!";
+        return INCORRECT_DATA;
     }
 }
 
