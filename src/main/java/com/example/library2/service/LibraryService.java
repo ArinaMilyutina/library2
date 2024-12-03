@@ -5,6 +5,7 @@ import com.example.library2.entity.Library;
 import com.example.library2.entity.book.Book;
 import com.example.library2.entity.user.User;
 import com.example.library2.exception.NotFoundException;
+import com.example.library2.mapper.LibraryMapper;
 import com.example.library2.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,11 @@ public class LibraryService {
         Book book = bookService.findByISBN(isbn)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
-        Library libraryEntry = new Library();
+        Library libraryEntry = LibraryMapper.INSTANCE.LibraryDtoToLibrary(libraryDto);
         libraryEntry.setUser(user);
         libraryEntry.setBook(book);
         libraryEntry.setBorrowDate(LocalDateTime.now());
-        libraryEntry.setReturnDate(libraryDto.getReturnDate());
+        libraryEntry.setReturnDate(libraryEntry.getReturnDate());
         return libraryRepository.save(libraryEntry);
     }
 
