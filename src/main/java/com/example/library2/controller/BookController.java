@@ -1,7 +1,8 @@
 package com.example.library2.controller;
 
 import com.example.library2.dto.BookDto;
-import com.example.library2.entity.book.Book;import com.example.library2.exception.NotFoundException;
+import com.example.library2.entity.book.Book;
+import com.example.library2.exception.NotFoundException;
 import com.example.library2.service.BookService;
 import com.example.library2.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class BookController {
     @Autowired
     private SecurityService securityService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping()
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PostMapping("/admin/create")
     public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto bookDto) {
         bookDto.setAdmin(securityService.getCurrentUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(bookDto));
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/ISBN/{ISBN}")
+    @GetMapping("/admin/ISBN/{ISBN}")
     public ResponseEntity<Book> findByISBN(@PathVariable String ISBN) throws NotFoundException {
         Optional<Book> book = bookService.findByISBN(ISBN);
         return book.map(ResponseEntity::ok)
@@ -52,13 +53,13 @@ public class BookController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{ISBN}")
+    @DeleteMapping("/admin/delete/{ISBN}")
     public ResponseEntity<String> deleteByISBN(@PathVariable String ISBN) {
         return new ResponseEntity<>(bookService.deleteBookByISBN(ISBN), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update/{ISBN}")
+    @PutMapping("/admin/update/{ISBN}")
     public ResponseEntity<Book> updateByISBN(@PathVariable String ISBN, @Valid @RequestBody BookDto bookDto) {
         bookDto.setAdmin(securityService.getCurrentUser());
         Book book = bookService.updateBookByISBN(ISBN, bookDto);
