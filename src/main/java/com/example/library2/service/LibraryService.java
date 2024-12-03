@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,15 +24,12 @@ public class LibraryService {
     @Autowired
     private UserService userService;
 
-    public Library createLibrary(String username, String isbn, LibraryDto libraryDto) {
-        User user = userService.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User  not found"));
-        Book book = bookService.findByISBN(isbn)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-
+    public Library createLibrary(String username, String isbn, LibraryDto libraryDto) throws NotFoundException {
+        Optional<User> user = userService.findByUsername(username);
+        Optional<Book> book = bookService.findByISBN(isbn);
         Library libraryEntry = LibraryMapper.INSTANCE.LibraryDtoToLibrary(libraryDto);
-        libraryEntry.setUser(user);
-        libraryEntry.setBook(book);
+        libraryEntry.setUser(user.get());
+        libraryEntry.setBook(book.get());
         libraryEntry.setBorrowDate(LocalDateTime.now());
         libraryEntry.setReturnDate(libraryEntry.getReturnDate());
         return libraryRepository.save(libraryEntry);
