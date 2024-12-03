@@ -27,7 +27,7 @@ public class BookController {
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping("/admin/create")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto bookDto) {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto bookDto) throws NotFoundException {
         bookDto.setAdmin(securityService.getCurrentUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(bookDto));
     }
@@ -40,8 +40,9 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Book> findById(@PathVariable Long id) throws NotFoundException {
         Optional<Book> book = bookService.findById(id);
-        return book.map(ResponseEntity::ok)
-                .orElseThrow(NoSuchElementException::new);
+        return book
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -54,13 +55,13 @@ public class BookController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/delete/{ISBN}")
-    public ResponseEntity<String> deleteByISBN(@PathVariable String ISBN) {
+    public ResponseEntity<String> deleteByISBN(@PathVariable String ISBN) throws NotFoundException {
         return new ResponseEntity<>(bookService.deleteBookByISBN(ISBN), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/update/{ISBN}")
-    public ResponseEntity<Book> updateByISBN(@PathVariable String ISBN, @Valid @RequestBody BookDto bookDto) {
+    public ResponseEntity<Book> updateByISBN(@PathVariable String ISBN, @Valid @RequestBody BookDto bookDto) throws NotFoundException {
         bookDto.setAdmin(securityService.getCurrentUser());
         Book book = bookService.updateBookByISBN(ISBN, bookDto);
         return ResponseEntity.ok(book);

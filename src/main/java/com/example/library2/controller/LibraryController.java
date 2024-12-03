@@ -20,7 +20,7 @@ public class LibraryController {
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping("/admin/create")
-    public ResponseEntity<Library> createBook(@RequestParam String username, @RequestParam String isbn, @RequestBody LibraryDto libraryDto) {
+    public ResponseEntity<Library> createBook(@RequestParam String username, @RequestParam String isbn, @RequestBody LibraryDto libraryDto) throws NotFoundException {
         Library libraryEntry = libraryService.createLibrary(username, isbn, libraryDto);
         return ResponseEntity.ok(libraryEntry);
     }
