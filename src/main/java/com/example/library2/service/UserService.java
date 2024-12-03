@@ -1,9 +1,9 @@
 package com.example.library2.service;
 
 import com.example.library2.dto.user.RegUserDto;
-import com.example.library2.entity.user.Role;
 import com.example.library2.entity.user.User;
 import com.example.library2.exception.UsernameAlreadyExistsException;
+import com.example.library2.mapper.UserMapper;
 import com.example.library2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -30,7 +29,8 @@ public class UserService implements UserDetailsService {
 
     public User createUser(RegUserDto userDto) {
         try {
-            User user = User.builder().username(userDto.getUsername()).password(passwordEncoder().encode(userDto.getPassword())).name(userDto.getName()).roles(Set.of(userDto.getRoles().toArray(new Role[0]))).build();
+            User user = UserMapper.INSTANCE.regUserDtoToUser(userDto);
+            user.setPassword(passwordEncoder().encode(user.getPassword()));
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new UsernameAlreadyExistsException(USER_ALREADY_EXISTS);

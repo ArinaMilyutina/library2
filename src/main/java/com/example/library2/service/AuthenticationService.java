@@ -3,6 +3,7 @@ package com.example.library2.service;
 import com.example.library2.dto.user.AuthUserDto;
 import com.example.library2.entity.user.User;
 import com.example.library2.jwt.JWTTokenProvider;
+import com.example.library2.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class AuthenticationService {
     private JWTTokenProvider jwtTokenProvider;
 
     public String authenticate(AuthUserDto authUserDto) {
-
-        Optional<User> byUsername = userService.findByUsername(authUserDto.getUsername());
+        User userToAuthenticate= UserMapper.INSTANCE.loginUserDtoToUser(authUserDto);
+        Optional<User> byUsername = userService.findByUsername(userToAuthenticate.getUsername());
         if (byUsername.isEmpty()) {
             return INCORRECT_DATA;
         }
