@@ -3,6 +3,7 @@ package com.example.library2.service;
 import com.example.library2.dto.BookDto;
 import com.example.library2.entity.book.Book;
 import com.example.library2.exception.NotFoundException;
+import com.example.library2.mapper.BookMapper;
 import com.example.library2.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,14 +23,7 @@ public class BookService {
 
     public Book createBook(BookDto bookDto) {
         try {
-            Book book = Book.builder()
-                    .title(bookDto.getTitle())
-                    .author(bookDto.getAuthor())
-                    .description(bookDto.getDescription())
-                    .genre(bookDto.getGenre())
-                    .ISBN(bookDto.getISBN())
-                    .admin(bookDto.getAdmin())
-                    .build();
+            Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
             return bookRepository.save(book);
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "ISBN already exists");
@@ -60,14 +54,8 @@ public class BookService {
 
     public Book updateBookByISBN(String ISBN, BookDto bookDto) {
         Optional<Book> byISBN = findByISBN(ISBN);
-        Book book = Book.builder()
-                .title(bookDto.getTitle())
-                .author(bookDto.getAuthor())
-                .description(bookDto.getDescription())
-                .ISBN(bookDto.getDescription())
-                .genre(bookDto.getGenre())
-                .admin(bookDto.getAdmin())
-                .build();
+        Book book = BookMapper.INSTANCE.bookDtoToBook(bookDto);
+        book.setId(byISBN.get().getId());
         return bookRepository.save(book);
     }
 }
