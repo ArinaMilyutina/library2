@@ -30,8 +30,8 @@ public class SecurityConfiguration {
     private static final String UPDATE_USER = "/user/updateUser"; */
 
     private static final String[] PUBLIC_URLS = {
-            "/v2/api-docs",
-            "/swagger-ui/index.html",
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
             "/swagger-resources/**",
             "configuration/**",
             "webjars/**",
