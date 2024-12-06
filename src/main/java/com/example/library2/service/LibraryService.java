@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class LibraryService {
+    private static final String USER_NOT_FOUND = "User not found !!!";
     @Autowired
     private LibraryRepository libraryRepository;
     @Autowired
@@ -26,6 +27,9 @@ public class LibraryService {
 
     public Library createLibrary(String username, String isbn, LibraryDto libraryDto) throws NotFoundException {
         Optional<User> user = userService.findByUsername(username);
+        if(user.isEmpty()){
+            throw new NotFoundException(USER_NOT_FOUND);
+        }
         Optional<Book> book = bookService.findByISBN(isbn);
         Library libraryEntry = LibraryMapper.INSTANCE.LibraryDtoToLibrary(libraryDto);
         libraryEntry.setUser(user.get());
