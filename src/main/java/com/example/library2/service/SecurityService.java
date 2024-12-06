@@ -14,13 +14,14 @@ import java.util.Optional;
 
 @Service
 public class SecurityService {
+    private static final String USER_NOT_FOUND = "User not found!!!";
     @Autowired
     private UserService userService;
 
-    public User getCurrentUser() throws NotFoundException {
+    public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = ((UserDetails) authentication.getPrincipal()).getUsername();
         Optional<User> currentUser = userService.findByUsername(currentUsername);
-        return currentUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User not found"));
+        return currentUser.orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, USER_NOT_FOUND));
     }
 }
