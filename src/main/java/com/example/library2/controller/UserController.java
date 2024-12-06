@@ -6,6 +6,7 @@ import com.example.library2.entity.user.Role;
 import com.example.library2.entity.user.User;
 import com.example.library2.exception.NotFoundException;
 import com.example.library2.service.AuthenticationService;
+import com.example.library2.service.RegistrationService;
 import com.example.library2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +25,19 @@ public class UserController {
     private UserService userService;
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private RegistrationService registrationService;
 
     @PostMapping("/reg")
-    public ResponseEntity<User> registrationUser(@Valid @RequestBody RegUserDto userDto) throws NotFoundException {
+    public ResponseEntity<User> registrationUser(@Valid @RequestBody RegUserDto userDto){
         userDto.setRoles(Set.of(Role.USER));
-        return ResponseEntity.ok(userService.createUser(userDto));
+        return ResponseEntity.ok(registrationService.regUser(userDto));
     }
 
     @PostMapping("/reg/admin")
-    public ResponseEntity<User> registrationAdmin(@Valid @RequestBody RegUserDto userDto) throws NotFoundException {
+    public ResponseEntity<User> registrationAdmin(@Valid @RequestBody RegUserDto userDto){
         userDto.setRoles(Set.of(Role.ADMIN));
-        return ResponseEntity.ok(userService.createUser(userDto));
+        return ResponseEntity.ok(registrationService.regUser(userDto));
     }
 
     @PostMapping("/login")
