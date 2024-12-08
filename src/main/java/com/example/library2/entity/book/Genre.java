@@ -16,5 +16,6 @@ public enum Genre {
     SATIRE,
     THRILLER,
     CLASSIC,
-    HUMOR
+    HUMOR,
+    TALE
 }
