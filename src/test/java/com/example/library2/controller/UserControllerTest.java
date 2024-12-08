@@ -54,13 +54,9 @@ class UserControllerTest {
 
     @Test
     void registrationUser() throws Exception {
-        RegUserDto userDto = new RegUserDto();
-        userDto.setUsername(USERNAME);
-        userDto.setPassword(PASSWORD);
-        userDto.setName(NAME);
-        userDto.setRoles(Set.of(Role.USER));
+        RegUserDto userDto=createUserDto(Set.of(Role.USER));
         User user = new User();
-        user.setUsername(USERNAME);
+        user.setUsername(userDto.getUsername());
         when(registrationService.regUser(userDto)).thenReturn(user);
         mockMvc.perform(post(REG_URL_USER)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,11 +67,7 @@ class UserControllerTest {
 
     @Test
     void registrationAdmin() throws Exception {
-        RegUserDto userDto = new RegUserDto();
-        userDto.setUsername(USERNAME);
-        userDto.setPassword(PASSWORD);
-        userDto.setName(NAME);
-        userDto.setRoles(Set.of(Role.ADMIN));
+        RegUserDto userDto = createUserDto(Set.of(Role.ADMIN));
         User user = new User();
         user.setUsername(USERNAME);
         when(registrationService.regUser(userDto)).thenReturn(user);
@@ -97,5 +89,13 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(authUserDto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(TOKEN));
+    }
+    private RegUserDto createUserDto(Set<Role> roles) {
+        RegUserDto userDto = new RegUserDto();
+        userDto.setUsername(USERNAME);
+        userDto.setPassword(PASSWORD);
+        userDto.setName(NAME);
+        userDto.setRoles(roles);
+        return userDto;
     }
 }
