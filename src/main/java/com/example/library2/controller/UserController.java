@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthUserDto authUserDto) throws NotFoundException {
+    public ResponseEntity<String> loginUser(@RequestBody AuthUserDto authUserDto) throws NotFoundException {
         String token = authenticationService.authenticate(authUserDto);
         return ResponseEntity.ok(token);
     }
