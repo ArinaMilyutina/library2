@@ -4,10 +4,10 @@ import com.example.library2.dto.user.AuthUserDto;
 import com.example.library2.dto.user.RegUserDto;
 import com.example.library2.entity.user.Role;
 import com.example.library2.entity.user.User;
+import com.example.library2.exception.IncorrectPasswordException;
 import com.example.library2.exception.NotFoundException;
 import com.example.library2.service.AuthenticationService;
 import com.example.library2.service.RegistrationService;
-import com.example.library2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +21,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
