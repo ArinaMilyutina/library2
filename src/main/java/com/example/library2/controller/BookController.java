@@ -27,7 +27,7 @@ public class BookController {
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping("/admin/create")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto bookDto) throws NotFoundException {
+    public ResponseEntity<Book> createBook(@Valid @RequestBody BookDto bookDto) {
         bookDto.setAdmin(securityService.getCurrentUser());
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.createBook(bookDto));
     }
