@@ -30,7 +30,9 @@ authorize a user, add, update, delete and view information about books.
 ## **Collection of request for testing (Postman):**
 
 1. POST, URL:http://localhost:8080/user/reg/admin
-   json:
+
+###    json:
+
    {
    "username":"Arisha20",
    "password":"123As76y",
@@ -38,7 +40,7 @@ authorize a user, add, update, delete and view information about books.
    }
 
 2. POST, URL:http://localhost:8080/user/reg
-   json:
+###    json:
    {
    "username":"Arisha21",
    "password":"123As76y",
@@ -46,7 +48,7 @@ authorize a user, add, update, delete and view information about books.
    }
 
 3. POST, URL:http://localhost:8080/user/login
-   json:
+###    json:
    {
    "username":"Arisha21",
    "password":"123As76y"
@@ -56,7 +58,7 @@ authorize a user, add, update, delete and view information about books.
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
-   json:
+###    json:
    {
    "title": "The Little Prince",
    "author": "Antoine de Saint-Exupery",
@@ -89,7 +91,7 @@ authorize a user, add, update, delete and view information about books.
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
-   json:
+###    json:
    {
    "title": "A Walk to Remember",
    "author": "Nicholas Sparks",
@@ -102,7 +104,7 @@ authorize a user, add, update, delete and view information about books.
     Headers:
     Key:Authorization
     Value:Bearer_ token(after login)
-    json:
+    ###    json:
     {
     "returnDate": "2025-03-05T14:30:00"
     }
