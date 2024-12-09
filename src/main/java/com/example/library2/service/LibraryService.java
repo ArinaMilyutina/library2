@@ -31,6 +31,9 @@ public class LibraryService {
             throw new NotFoundException(USER_NOT_FOUND);
         }
         Optional<Book> book = bookService.findByISBN(isbn);
+        if (book.isEmpty()) {
+            throw new NotFoundException("Book not found !!!");
+        }
         Library libraryEntry = LibraryMapper.INSTANCE.LibraryDtoToLibrary(libraryDto);
         libraryEntry.setUser(user.get());
         libraryEntry.setBook(book.get());
