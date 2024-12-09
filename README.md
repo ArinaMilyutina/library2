@@ -107,3 +107,5 @@ Value:Bearer_ token(after login)
     Headers:
     Key:Authorization
     Value:Bearer_ token(after login)
+12. http://localhost:8080/swagger-ui.html,
+    http://localhost:8080/v3/api-docs
