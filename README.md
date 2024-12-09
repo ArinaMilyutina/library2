@@ -1,4 +1,5 @@
-#****Library****
+# **Library**
+
 The library management system is designed to manage information about books. The system allows you to register, authorize a user, add, update, delete and view information about books.
 
 ## **Technology stack:**
@@ -16,14 +17,14 @@ The library management system is designed to manage information about books. The
 - Swagger
 - Docker
 
-**## Run the project**
+## **Run the project**
 1. git clone https://github.com/ArinaMilyutina/library2
 2. cd library2
 3. mvn clean install
 4. docker-compose up -d --build
 5. docker-compose ps (library2-app-1, library2-postgres-1 )
 
-#****Collection of request for testing (Postman)****
+## **Collection of request for testing (Postman):**
 1. POST, URL:http://localhost:8080/user/reg/admin
 json:
    {
