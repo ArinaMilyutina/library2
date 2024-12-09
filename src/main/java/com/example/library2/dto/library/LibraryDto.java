@@ -1,4 +1,4 @@
-package com.example.library2.dto;
+package com.example.library2.dto.library;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

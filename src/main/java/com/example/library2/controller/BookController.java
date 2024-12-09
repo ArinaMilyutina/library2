@@ -1,6 +1,6 @@
 package com.example.library2.controller;
 
-import com.example.library2.dto.BookDto;
+import com.example.library2.dto.book.BookDto;
 import com.example.library2.entity.book.Book;
 import com.example.library2.exception.NotFoundException;
 import com.example.library2.service.BookService;

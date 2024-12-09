@@ -1,4 +1,4 @@
-package com.example.library2.dto;
+package com.example.library2.dto.book;
 
 import com.example.library2.entity.book.Genre;
 import com.example.library2.entity.user.User;
