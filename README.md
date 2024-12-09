@@ -29,36 +29,36 @@ authorize a user, add, update, delete and view information about books.
 
 ## **Collection of request for testing (Postman):**
 
-1. POST, URL:http://localhost:8080/user/reg/admin
+##### 1. POST, URL:http://localhost:8080/user/reg/admin
 
-###    json:
-
+   json:
    {
    "username":"Arisha20",
    "password":"123As76y",
    "name":"Arina"
    }
 
-2. POST, URL:http://localhost:8080/user/reg
-###    json:
+##### 2. POST, URL:http://localhost:8080/user/reg
+
+   json:
    {
    "username":"Arisha21",
    "password":"123As76y",
    "name":"Arina"
    }
 
-3. POST, URL:http://localhost:8080/user/login
-###    json:
+##### 3. POST, URL:http://localhost:8080/user/login
+   json:
    {
    "username":"Arisha21",
    "password":"123As76y"
    }
 
-4. POST, URL:http://localhost:8080/book/admin/create
+##### 4. POST, URL:http://localhost:8080/book/admin/create
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
-###    json:
+   json:
    {
    "title": "The Little Prince",
    "author": "Antoine de Saint-Exupery",
@@ -67,31 +67,31 @@ authorize a user, add, update, delete and view information about books.
    "genre": ["TALE","FANTASY"]
    }
 
-5. GET, URL:http://localhost:8080/book/books
+##### 5. GET, URL:http://localhost:8080/book/books
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
 
-6. GET, URL:http://localhost:8080/book/{id}
+##### 6. GET, URL:http://localhost:8080/book/{id}
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
 
-7. GET, URL:http://localhost:8080/book/admin/ISBN/{ISBN}
+##### 7. GET, URL:http://localhost:8080/book/admin/ISBN/{ISBN}
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
 
-8. DELETE, URL:http://localhost:8080/book/admin/delete/{ISBN}
+##### 8. DELETE, URL:http://localhost:8080/book/admin/delete/{ISBN}
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
 
-9. PUT, URL:http://localhost:8080/book/admin/update/{ISBN}
+##### 9. PUT, URL:http://localhost:8080/book/admin/update/{ISBN}
    Headers:
    Key:Authorization
    Value:Bearer_ token(after login)
-###    json:
+   json:
    {
    "title": "A Walk to Remember",
    "author": "Nicholas Sparks",
@@ -100,20 +100,20 @@ authorize a user, add, update, delete and view information about books.
    "genre": ["ROMANCE"]
    }
 
-10. POST, URL:http://localhost:8080/library/admin/create?username={username}&isbn={ISBN}
+##### 10. POST, URL:http://localhost:8080/library/admin/create?username={username}&isbn={ISBN}
     Headers:
     Key:Authorization
     Value:Bearer_ token(after login)
-    ###    json:
+    json:
     {
     "returnDate": "2025-03-05T14:30:00"
     }
 
-11. GET, URL:http://localhost:8080/library/available-books
+##### 11. GET, URL:http://localhost:8080/library/available-books
     Headers:
     Key:Authorization
     Value:Bearer_ token(after login)
 
-12. Swagger:
+##### 12. Swagger:
     http://localhost:8080/swagger-ui.html,
     http://localhost:8080/v3/api-docs
