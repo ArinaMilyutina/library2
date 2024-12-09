@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class LibraryController {
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PostMapping("/admin/create")
-    public ResponseEntity<Library> createBook(@RequestParam String username, @RequestParam String isbn, @RequestBody LibraryDto libraryDto) throws NotFoundException {
+    public ResponseEntity<Library> createBook(@RequestParam String username, @RequestParam String isbn, @Valid @RequestBody LibraryDto libraryDto) throws NotFoundException {
         Library libraryEntry = libraryService.createLibrary(username, isbn, libraryDto);
         return ResponseEntity.ok(libraryEntry);
     }
