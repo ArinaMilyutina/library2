@@ -60,8 +60,10 @@ public class LibraryControllerTest {
     @WithMockUser(roles = "ADMIN")
     @Test
     void createLibraryTest() throws Exception {
-        LibraryDto libraryDto = new LibraryDto(LocalDateTime.now());
+        LibraryDto libraryDto = new LibraryDto();
+        libraryDto.setReturnDate(LocalDateTime.of(2025, 3, 15, 14, 30));
         Library library = new Library();
+        library.setReturnDate(libraryDto.getReturnDate());
         when(libraryService.createLibrary(eq(USERNAME), eq(ISBN), any(LibraryDto.class))).thenReturn(library);
         mockMvc.perform(post(URL_CREATE_LIBRARY)
                         .param("username", USERNAME)
