@@ -67,6 +67,7 @@ authorize a user, add, update, delete and view information about books.
    "password":"123As76y"
 
    }
+
    **Headers:**
 
    **Key: Authorization**
