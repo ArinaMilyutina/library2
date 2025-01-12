@@ -1,7 +1,7 @@
 package com.example.library2.mapper;
 
-import com.example.library2.dto.AuthUserDto;
-import com.example.library2.dto.RegUserDto;
+import com.example.library2.dto.RequestAuthUser;
+import com.example.library2.dto.RequestRegUser;
 import com.example.library2.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -11,9 +11,7 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    RegUserDto regUserToRegUserDto(User user);
+    User regUserDtoToUser(RequestRegUser regUserDto);
 
-    User regUserDtoToUser(RegUserDto regUserDto);
-
-    User loginUserDtoToUser(AuthUserDto authUserDto);
+    User loginUserDtoToUser(RequestAuthUser authUserDto);
 }
