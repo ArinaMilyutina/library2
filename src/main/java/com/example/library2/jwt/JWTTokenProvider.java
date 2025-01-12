@@ -1,87 +1,73 @@
 package com.example.library2.jwt;
 
-import com.example.library2.entity.user.Role;
-import io.jsonwebtoken.*;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JWTTokenProvider {
     private final static String INVALID_TOKEN = "JWT token is expired or invalid";
-    private final static String AUTH = "Authorization";
-    private final static String PREFIX = "Bearer_";
+    private static final String LIBRARY2 = "library2";
+    private static final String USER_ID = "userId";
+    private static final String ROLES = "roles";
     @Value(value = "${jwt.token.secret}")
     private String jwtSecret;
 
     @Value(value = "${jwt.token.expired}")
     private long jwtExpirationInMs;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @PostConstruct
     protected void init() {
         jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
     }
 
-    public String generateToken(String username, Set<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", getUserRoleNamesFromJWT(roles));
-
+    public String generateToken(UserDetails userDetails) {
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtExpirationInMs);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                .compact();
+        List<String> roles = userDetails.getAuthorities()
+                .stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return JWT.create()
+                .withIssuer(LIBRARY2)
+                .withClaim(USER_ID, userDetails.getUsername())
+                .withClaim(ROLES, roles)
+                .withIssuedAt(now)
+                .withExpiresAt(validity)
+                .sign(algorithm);
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserUsernameFromJWT(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    public String getUserUsernameFromJWT(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader(AUTH);
-        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    @SneakyThrows
-    public boolean validateToken(String token) {
+    public Authentication validateToken(String token) throws JWTAuthenticationException {
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret);
+        JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer(LIBRARY2)
+                .build();
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
+            DecodedJWT jwt = verifier.verify(token);
+            String userId = jwt.getClaim(USER_ID).asString();
+            List<String> roles = jwt.getClaim(ROLES).asList(String.class);
+            Collection<GrantedAuthority> authorities = roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+            return new UsernamePasswordAuthenticationToken(userId, null, authorities);
+        } catch (JWTVerificationException exception) {
             throw new JWTAuthenticationException(INVALID_TOKEN);
         }
-    }
-
-    private List<String> getUserRoleNamesFromJWT(Set<Role> roles) {
-        List<String> result = new ArrayList<>();
-        roles.forEach(role -> result.add(role.name()));
-        return result;
     }
 }

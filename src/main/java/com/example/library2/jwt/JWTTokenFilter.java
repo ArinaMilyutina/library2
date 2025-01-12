@@ -1,35 +1,47 @@
 package com.example.library2.jwt;
 
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 @Component
-@RequiredArgsConstructor
-public class JWTTokenFilter extends GenericFilterBean {
+public class JWTTokenFilter extends OncePerRequestFilter {
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
+
 
     private final JWTTokenProvider jwtTokenProvider;
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
+    public JWTTokenFilter(JWTTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
-            if (auth != null) {
-                SecurityContextHolder.getContext().setAuthentication(auth);
+
+    private String getToken(HttpServletRequest request) {
+        String header = request.getHeader(AUTHORIZATION);
+        if (header != null && header.startsWith(BEARER)) {
+            return header.substring(BEARER.length());
+        }
+        return null;
+    }
+
+    @SneakyThrows
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = getToken(request);
+        if (token != null) {
+            var authentication = jwtTokenProvider.validateToken(token);
+            if (authentication != null) {
+                org.springframework.security.core.context.SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+
+        filterChain.doFilter(request, response);
+
     }
 }
