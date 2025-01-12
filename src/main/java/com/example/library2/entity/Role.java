@@ -1,4 +1,4 @@
-package com.example.library2.entity.user;
+package com.example.library2.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
