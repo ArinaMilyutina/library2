@@ -1,6 +1,6 @@
-package com.example.library2.dto.user;
+package com.example.library2.dto;
 
-import com.example.library2.entity.user.Role;
+import com.example.library2.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegUserDto {
+public class RequestRegUser {
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 4, max = 100, message = "Username must be between 4 and 100 characters")
     private String username;

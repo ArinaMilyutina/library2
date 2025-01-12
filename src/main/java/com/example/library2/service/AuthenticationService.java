@@ -1,6 +1,7 @@
 package com.example.library2.service;
 
-import com.example.library2.dto.AuthUserDto;
+import com.example.library2.dto.RequestAuthUser;
+import com.example.library2.dto.ResponseAuthUser;
 import com.example.library2.entity.User;
 import com.example.library2.exception.IncorrectPasswordException;
 import com.example.library2.exception.NotFoundException;
@@ -25,7 +26,7 @@ public class AuthenticationService {
     @Autowired
     private JWTTokenProvider jwtTokenProvider;
 
-    public String authenticate(AuthUserDto authUserDto) throws NotFoundException {
+    public ResponseAuthUser authenticate(RequestAuthUser authUserDto) throws NotFoundException {
         User userToAuthenticate = UserMapper.INSTANCE.loginUserDtoToUser(authUserDto);
         Optional<User> byUsername = userService.findByUsername(userToAuthenticate.getUsername());
         if (byUsername.isEmpty()) {
@@ -33,7 +34,7 @@ public class AuthenticationService {
         }
         User user = byUsername.get();
         if (passwordEncoder.matches(authUserDto.getPassword(), user.getPassword())) {
-            return jwtTokenProvider.generateToken(user);
+            return ResponseAuthUser.builder().token(jwtTokenProvider.generateToken(user)).build();
         }
         throw new IncorrectPasswordException(INCORRECT_PASSWORD);
     }
