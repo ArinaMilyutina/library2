@@ -1,3 +1,7 @@
+networks:
+  my-network:
+    driver: bridge
+
 services:
   postgres:
     image: postgres:14
@@ -7,10 +11,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: arinemiller22
       POSTGRES_DB: postgres
+    networks:
+      - my-network
+
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - postgres
     environment:
@@ -25,3 +32,5 @@ services:
       SPRING_FLYWAY_ENABLED: true
       SPRING_FLYWAY_BASELINE_ON_MIGRATE: true
       SPRING_FLYWAY_LOCATIONS: classpath:db.migration
+    networks:
+      - my-network
