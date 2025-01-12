@@ -1,7 +1,9 @@
 package com.example.library2.service;
 
-import com.example.library2.entity.user.User;
+import com.example.library2.dto.UserInfoRequest;
+import com.example.library2.entity.User;
 import com.example.library2.exception.AlreadyExistsException;
+import com.example.library2.exception.NotFoundException;
 import com.example.library2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -25,6 +28,18 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    public UserInfoRequest takeTheBook(Long id) throws NotFoundException {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new NotFoundException(USER_NOT_FOUND);
+        }
+        User user = userOptional.get();
+        return UserInfoRequest.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .build();
     }
 
     public void checkUsernameAvailability(String username) {
