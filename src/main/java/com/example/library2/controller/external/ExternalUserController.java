@@ -1,6 +1,6 @@
 package com.example.library2.controller.external;
 
-import com.example.library2.dto.UserInfoRequest;
+import com.example.library2.dto.UserInfoResponse;
 import com.example.library2.entity.User;
 import com.example.library2.exception.NotFoundException;
 import com.example.library2.service.SecurityService;
@@ -29,7 +29,7 @@ public class ExternalUserController {
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/find-by-id/{id}")
-    public ResponseEntity<UserInfoRequest> findById(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<UserInfoResponse> findById(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.ok(userService.takeTheBook(id));
     }
 

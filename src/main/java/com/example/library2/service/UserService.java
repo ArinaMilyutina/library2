@@ -1,6 +1,6 @@
 package com.example.library2.service;
 
-import com.example.library2.dto.UserInfoRequest;
+import com.example.library2.dto.UserInfoResponse;
 import com.example.library2.entity.User;
 import com.example.library2.exception.AlreadyExistsException;
 import com.example.library2.exception.NotFoundException;
@@ -8,7 +8,6 @@ import com.example.library2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,13 +29,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username);
     }
 
-    public UserInfoRequest takeTheBook(Long id) throws NotFoundException {
+    public UserInfoResponse takeTheBook(Long id) throws NotFoundException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
             throw new NotFoundException(USER_NOT_FOUND);
         }
         User user = userOptional.get();
-        return UserInfoRequest.builder()
+        return UserInfoResponse.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .build();
@@ -50,11 +49,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<User> byUsername = userRepository.findUserByUsername(username);
         if (byUsername.isPresent()) {
             return byUsername.get();
         }
-        throw new UsernameNotFoundException(USER_NOT_FOUND);
+        throw new NotFoundException(USER_NOT_FOUND);
     }
 }
