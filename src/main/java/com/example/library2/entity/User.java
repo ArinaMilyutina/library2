@@ -1,4 +1,4 @@
-package com.example.library2.entity.user;
+package com.example.library2.entity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
+@Table(name = "users", schema="library2_schema", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", schema="library2_schema",joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false)
     private Set<Role> roles;
     @Override
