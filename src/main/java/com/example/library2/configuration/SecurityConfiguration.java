@@ -18,16 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private final JWTTokenFilter jwtTokenFilter;
-
-    private static final String ADMIN_ENDPOINT_BOOK = "/book/admin/**";
-    private static final String ADMIN_ENDPOINT_LIBRARY = "/library/admin/**";
     private static final String LOGIN_ENDPOINT = "/user/login";
     private static final String REG_ENDPOINT_USER = "/user/reg";
     private static final String REG_ENDPOINT_ADMIN = "/user/reg/admin";
-    private static final String ADMIN = "ADMIN";
     private static final String DB = "/db/**";
-  /*private static final String DELETE_USER = "/user/current";
-    private static final String UPDATE_USER = "/user/updateUser"; */
 
     private static final String[] PUBLIC_URLS = {
             "/v3/api-docs/**",
@@ -51,10 +45,6 @@ public class SecurityConfiguration {
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(REG_ENDPOINT_USER).permitAll()
                 .antMatchers(REG_ENDPOINT_ADMIN).permitAll()
-               /* .antMatchers(DELETE_USER).authenticated()
-                .antMatchers(UPDATE_USER).authenticated()*/
-                .antMatchers(ADMIN_ENDPOINT_BOOK).hasAuthority(ADMIN)
-                .antMatchers(ADMIN_ENDPOINT_LIBRARY).hasAuthority(ADMIN)
                 .antMatchers(HttpMethod.GET, PUBLIC_URLS).permitAll()
                 .antMatchers(DB).permitAll()
                 .anyRequest().authenticated()
@@ -62,7 +52,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.headers().frameOptions().sameOrigin();
-
         return http.build();
     }
 
