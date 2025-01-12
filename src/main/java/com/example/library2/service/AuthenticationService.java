@@ -1,7 +1,7 @@
 package com.example.library2.service;
 
-import com.example.library2.dto.user.AuthUserDto;
-import com.example.library2.entity.user.User;
+import com.example.library2.dto.AuthUserDto;
+import com.example.library2.entity.User;
 import com.example.library2.exception.IncorrectPasswordException;
 import com.example.library2.exception.NotFoundException;
 import com.example.library2.jwt.JWTTokenProvider;
@@ -33,7 +33,7 @@ public class AuthenticationService {
         }
         User user = byUsername.get();
         if (passwordEncoder.matches(authUserDto.getPassword(), user.getPassword())) {
-            return jwtTokenProvider.generateToken(authUserDto.getUsername(), user.getRoles());
+            return jwtTokenProvider.generateToken(user);
         }
         throw new IncorrectPasswordException(INCORRECT_PASSWORD);
     }
