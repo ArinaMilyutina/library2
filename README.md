@@ -26,27 +26,28 @@ Library-service:The service manages the processes of issuing and returning books
 
 ## **Run the project**
 
-1. git clone https://github.com/ArinaMilyutina/eureka-server
-2. cd eureka-server
-3. mvn clean install
-4. docker build -t eureka-server .
-5. docker run -d -p 8761:8761 --name eureka-server eureka-server
-6. docker network connect my-network eureka-server
-7. git clone https://github.com/ArinaMilyutina/library2
-8. cd library2
-9. mvn clean install
-10. docker-compose up -d --build
-11. docker network connect my-network library2-app-1
-12. git clone https://github.com/ArinaMilyutina/book-service
-13. cd book-service
-14. mvn clean install
-15. docker-compose up -d --build
-16. docker network connect my-network books-service-app-1
-17. git clone https://github.com/ArinaMilyutina/library-service
-18. cd library-service
-19. mvn clean install
-20. docker-compose up -d --build
-21. docker network connect my-network library-service-app-1
+1. docker network create my-network
+2. git clone https://github.com/ArinaMilyutina/eureka-server
+3. cd eureka-server
+4. mvn clean install
+5. docker build -t eureka-server .
+6. docker run -d -p 8761:8761 --name eureka-server eureka-server
+7. docker network connect my-network eureka-server
+8. git clone https://github.com/ArinaMilyutina/library2
+9. cd library2
+10. mvn clean install
+11. docker-compose up -d --build
+12. docker network connect my-network library2-app-1
+13. git clone https://github.com/ArinaMilyutina/book-service
+14. cd book-service
+15. mvn clean install
+16. docker-compose up -d --build
+17. docker network connect my-network book-service-app-1
+18. git clone https://github.com/ArinaMilyutina/library-service
+19. cd library-service
+20. mvn clean install
+21. docker-compose up -d --build
+22. docker network connect my-network library-service-app-1
 
 ## **Collection of request for testing (Postman):**
 
