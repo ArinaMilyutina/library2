@@ -81,7 +81,7 @@ Library-service:The service manages the processes of issuing and returning books
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
     json:
     {
 
@@ -97,31 +97,31 @@ Library-service:The service manages the processes of issuing and returning books
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
 
 ##### 6. GET, URL:http://localhost:8082/book/{id}
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
 
 ##### 7. GET, URL:http://localhost:8082/book/admin/ISBN/{ISBN}
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
 
 ##### 8. DELETE, URL:http://localhost:8082/book/admin/delete/{ISBN}
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
 
 ##### 9. PUT, URL:http://localhost:8082/book/admin/update/{ISBN}
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
     json:
     {
     "title": "A Walk to Remember",
@@ -141,7 +141,7 @@ Library-service:The service manages the processes of issuing and returning books
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
     json:
     {
     "expectedReturnDate": "2025-03-05T14:30:00"
@@ -151,7 +151,7 @@ Library-service:The service manages the processes of issuing and returning books
 
     Headers:
     Key:Authorization
-    Value:Bearer_ token(after login)
+    Value:Bearer token(after login)
 
 ##### 13. Swagger:
 
